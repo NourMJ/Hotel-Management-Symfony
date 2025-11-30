@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Room;
+use App\Entity\RoomCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class RoomType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('title')
+            ->add('description')
+            ->add('pricePerNight')
+            ->add('capacity')
+            ->add('roomNumber')
+            ->add('floor')
+            ->add('amenities')
+            ->add('image')
+            ->add('category', EntityType::class, [
+                'class' => RoomCategory::class,
+                'choice_label' => 'id',
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Room::class,
+        ]);
+    }
+}

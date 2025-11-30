@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rooms{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1 class="mb-4">Available Rooms</h1>
+
+        <div class="row">
+            {% for room in rooms %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {# later: use real image path #}
+                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="{{ room.title }}">
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ room.title }}</h5>
+                            <p class="card-text">
+                                {{ room.description|slice(0, 80) }}{% if room.description|length > 80 %}...{% endif %}
+                            </p>
+                            <ul class="list-unstyled mb-2">
+                                <li><strong>Price:</strong> {{ room.pricePerNight }} € / night</li>
+                                <li><strong>Capacity:</strong> {{ room.capacity }} guests</li>
+                                <li><strong>Category:</strong> {{ room.category.name }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="card-footer text-end">
+                            <a href="#" class="btn btn-primary btn-sm">Book now</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No rooms found.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+    {% if stats %}
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Total Revenue</h6>
+                        <p class="h4 mb-0">{{ stats.totalRevenue }} €</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Reservations</h6>
+                        <p class="h4 mb-0">{{ stats.totalReservations }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Clients</h6>
+                        <p class="h4 mb-0">{{ stats.totalClients }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Occupancy</h6>
+                        <p class="h4 mb-0">{{ stats.occupancyRate }} %</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No statistics yet. (Later we will generate them.)
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
