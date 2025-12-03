@@ -20,8 +20,7 @@ class RoomType extends AbstractType
             ->add('capacity')
             ->add('roomNumber')
             ->add('floor')
-            ->add('amenities')
-            ->add('image')
+             ->add('image')
             ->add('category', EntityType::class, [
                 'class' => RoomCategory::class,
                 'choice_label' => 'id',
