@@ -3,47 +3,54 @@
 {% block title %}Room index{% endblock %}
 
 {% block body %}
-    <h1>Room index</h1>
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3 mb-0">Rooms management</h1>
+            <a href="{{ path('app_admin_room_new') }}" class="btn btn-primary">+ New room</a>
+        </div>
 
-    <table class="table">
-        <thead>
+        <table class="table table-striped align-middle">
+            <thead>
             <tr>
-                <th>Id</th>
+                <th>Number</th>
                 <th>Title</th>
-                <th>Description</th>
-                <th>PricePerNight</th>
+                <th>Category</th>
+                <th>Price / night</th>
                 <th>Capacity</th>
-                <th>RoomNumber</th>
                 <th>Floor</th>
                 <th>Amenities</th>
                 <th>Image</th>
-                <th>actions</th>
+                <th class="text-end">Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for room in rooms %}
-            <tr>
-                <td>{{ room.id }}</td>
-                <td>{{ room.title }}</td>
-                <td>{{ room.description }}</td>
-                <td>{{ room.pricePerNight }}</td>
-                <td>{{ room.capacity }}</td>
-                <td>{{ room.roomNumber }}</td>
-                <td>{{ room.floor }}</td>
-                <td>{{ room.amenities ? room.amenities|json_encode : '' }}</td>
-                <td>{{ room.image }}</td>
-                <td>
-                    <a href="{{ path('app_admin_room_show', {'id': room.id}) }}">show</a>
-                    <a href="{{ path('app_admin_room_edit', {'id': room.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_admin_room_new') }}">Create new</a>
+            </thead>
+            <tbody>
+            {% for room in rooms %}
+                <tr>
+                    <td>{{ room.roomNumber }}</td>
+                    <td>{{ room.title }}</td>
+                    <td>
+                        {% if room.category %}
+                            <span class="badge bg-info text-dark">{{ room.category.name }}</span>
+                        {% else %}
+                            <span class="text-muted">No category</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ room.pricePerNight }} €</td>
+                    <td>{{ room.capacity }}</td>
+                    <td>{{ room.floor }}</td>
+                    <td class="small">{{ room.amenities ? room.amenities|json_encode : '' }}</td>
+                    <td>{{ room.image }}</td>
+                    <td class="text-end">
+                        <a href="{{ path('app_admin_room_show', {'id': room.id}) }}" class="btn btn-sm btn-outline-secondary">Show</a>
+                        <a href="{{ path('app_admin_room_edit', {'id': room.id}) }}" class="btn btn-sm btn-outline-warning">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9" class="text-center text-muted">No rooms found.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

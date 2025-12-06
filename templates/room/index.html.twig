@@ -26,7 +26,9 @@
                         </div>
 
                         <div class="card-footer text-end">
-                            <a href="#" class="btn btn-primary btn-sm">Book now</a>
+                            <a href="{{ path('app_reservation_new', {'roomId': room.id}) }}" class="btn btn-primary btn-sm">
+                                Book now
+                            </a>
                         </div>
                     </div>
                 </div>

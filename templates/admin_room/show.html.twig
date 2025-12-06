@@ -1,54 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Room{% endblock %}
+{% block title %}Room details{% endblock %}
 
 {% block body %}
-    <h1>Room</h1>
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3 mb-0">Room #{{ room.roomNumber }}</h1>
+            <div>
+                <a href="{{ path('app_admin_room_index') }}" class="btn btn-outline-secondary btn-sm">Back to list</a>
+                <a href="{{ path('app_admin_room_edit', {'id': room.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                {{ include('admin_room/_delete_form.html.twig') }}
+            </div>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ room.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ room.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ room.description }}</td>
-            </tr>
-            <tr>
-                <th>PricePerNight</th>
-                <td>{{ room.pricePerNight }}</td>
-            </tr>
-            <tr>
-                <th>Capacity</th>
-                <td>{{ room.capacity }}</td>
-            </tr>
-            <tr>
-                <th>RoomNumber</th>
-                <td>{{ room.roomNumber }}</td>
-            </tr>
-            <tr>
-                <th>Floor</th>
-                <td>{{ room.floor }}</td>
-            </tr>
-            <tr>
-                <th>Amenities</th>
-                <td>{{ room.amenities ? room.amenities|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ room.image }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="row g-3">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ room.title }}</h5>
+                        <p class="text-muted">
+                            Category:
+                            {% if room.category %}
+                                <span class="badge bg-info text-dark">{{ room.category.name }}</span>
+                            {% else %}
+                                <span class="text-muted">No category</span>
+                            {% endif %}
+                        </p>
+                        <p>{{ room.description }}</p>
 
-    <a href="{{ path('app_admin_room_index') }}">back to list</a>
-
-    <a href="{{ path('app_admin_room_edit', {'id': room.id}) }}">edit</a>
-
-    {{ include('admin_room/_delete_form.html.twig') }}
+                        <div class="row mt-3">
+                            <div class="col-sm-6">
+                                <div><strong>Price per night:</strong> {{ room.pricePerNight }} €</div>
+                                <div><strong>Capacity:</strong> {{ room.capacity }} guests</div>
+                                <div><strong>Floor:</strong> {{ room.floor }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div><strong>Amenities:</strong></div>
+                                <div class="small">
+                                    {{ room.amenities ? room.amenities|json_encode : 'None' }}
+                                </div>
+                                <div class="mt-2"><strong>Image:</strong> {{ room.image }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

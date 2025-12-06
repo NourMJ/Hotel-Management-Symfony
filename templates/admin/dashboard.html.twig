@@ -3,48 +3,116 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block body %}
-<div class="container my-4">
-    <h1 class="mb-4">Admin Dashboard</h1>
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">Admin Dashboard</h1>
+                <p class="text-muted mb-0">Overview of hotel performance and activity</p>
+            </div>
+            <a href="{{ path('app_admin_room_new') }}" class="btn btn-primary">
+                + Add Room
+            </a>
+        </div>
 
+        {% if stats %}
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Total Revenue</div>
+                            <div class="h4 mb-0">{{ stats.totalRevenue }} €</div>
+                            <div class="text-success small mt-1">This month</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Reservations</div>
+                            <div class="h4 mb-0">{{ stats.totalReservations }}</div>
+                            <div class="text-success small mt-1">Bookings</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Clients</div>
+                            <div class="h4 mb-0">{{ stats.totalClients }}</div>
+                            <div class="text-muted small mt-1">Registered</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Occupancy</div>
+                            <div class="h4 mb-0">{{ stats.occupancyRate }} %</div>
+                            <div class="text-muted small mt-1">Rooms filled</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Chart card #}
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Statistics overview</h5>
+                            <canvas id="statsChart" heightt="120"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Quick links</h5>
+                            <div class="list-group list-group-flush">
+                                <a href="{{ path('app_admin_room_index') }}" class="list-group-item list-group-item-action">Manage rooms</a>
+                                <a href="{{ path('app_admin_notifications') }}" class="list-group-item list-group-item-action">Notifications</a>
+                                <a href="{{ path('app_rooms') }}" class="list-group-item list-group-item-action">Public rooms page</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No statistics yet. (Later we will generate them.)
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
     {% if stats %}
-        <div class="row g-3">
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="text-muted">Total Revenue</h6>
-                        <p class="h4 mb-0">{{ stats.totalRevenue }} €</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="text-muted">Reservations</h6>
-                        <p class="h4 mb-0">{{ stats.totalReservations }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="text-muted">Clients</h6>
-                        <p class="h4 mb-0">{{ stats.totalClients }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="text-muted">Occupancy</h6>
-                        <p class="h4 mb-0">{{ stats.occupancyRate }} %</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="alert alert-info">
-            No statistics yet. (Later we will generate them.)
-        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Revenue', 'Reservations', 'Clients', 'Occupancy %'],
+                    datasets: [{
+                        label: 'Current month',
+                        data: [
+                            {{ stats.totalRevenue ?? 0 }},
+                            {{ stats.totalReservations ?? 0 }},
+                            {{ stats.totalClients ?? 0 }},
+                            {{ stats.occupancyRate ?? 0 }}
+                        ],
+                        backgroundColor: ['#0d6efd','#198754','#ffc107','#dc3545']
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        </script>
     {% endif %}
-</div>
 {% endblock %}

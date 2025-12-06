@@ -33,9 +33,6 @@ class Room
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $floor = null;
 
-    #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $amenities = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
