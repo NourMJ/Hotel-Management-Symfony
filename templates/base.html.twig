@@ -1,73 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Hotel{% endblock %}</title>
+    <meta charset="utf-8">
+    <title>{% block title %}Hotelier{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    {# Bootstrap 5 CSS #}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    {# Hotelier CSS & fonts #}
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('app_rooms') }}">MyHotel</a>
+<div class="container-xxl bg-white p-0">
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#mainNavbar" aria-controls="mainNavbar"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    {# TOP BAR + NAVBAR from Hotelier, but with Symfony routes #}
+    <div class="container-fluid bg-dark px-0">
+        <div class="row gx-0">
+            <div class="col-lg-3 bg-dark d-none d-lg-block">
+                <a href="{{ path('app_home') }}" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
+                    <h1 class="m-0 text-primary text-uppercase">MyHotel</h1>
+                </a>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark p-3 p-lg-0">
+                    <a href="{{ path('app_home') }}" class="navbar-brand d-block d-lg-none">
+                        <h1 class="m-0 text-primary text-uppercase">MyHotel</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="{{ path('app_home') }}" class="nav-item nav-link">Home</a>
+                            <a href="{{ path('app_rooms') }}" class="nav-item nav-link">Rooms</a>
 
-        <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {# Public links #}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_rooms') }}">Rooms</a>
-                </li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_admin_dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                                <a href="{{ path('app_admin_room_index') }}" class="nav-item nav-link">Manage Rooms</a>
+                                <a href="{{ path('app_admin_notifications') }}" class="nav-item nav-link">Notifications</a>
+                            {% endif %}
+                        </div>
 
-                {# Admin-only links #}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_admin_dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_admin_notifications') }}">Notifications</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_admin_room_index') }}">Manage Rooms</a>
-                    </li>
-                {% endif %}
-            </ul>
-
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                {% if app.user %}
-                    <li class="nav-item">
-                        <span class="navbar-text me-2">
-                            Hello, {{ app.user.firstname ?? app.user.email }}
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_register') }}">Register</a>
-                    </li>
-                {% endif %}
-            </ul>
+                        <div class="navbar-nav ms-auto py-0">
+                            {% if app.user %}
+                                <span class="navbar-text text-white me-3">
+                                Hello, {{ app.user.firstname ?? app.user.email }}
+                            </span>
+                                <a href="{{ path('app_logout') }}" class="btn btn-outline-light btn-sm">Logout</a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
+                                <a href="{{ path('app_register') }}" class="btn btn-primary btn-sm">Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
     </div>
-</nav>
 
-{% block body %}{% endblock %}
 
-{# Bootstrap 5 JS #}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {# PAGE CONTENT FROM CHILD TEMPLATES #}
+    {% block body %}{% endblock %}
+
+    {# FOOTER from Hotelier (shortened if you want) #}
+    {# ... paste footer HTML here, unchanged except links if needed ... #}
+</div>
+
+{# JS libraries from Hotelier #}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('lib/wow/wow.min.js') }}"></script>
+<script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
+<script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+<script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('lib/wow/wow.min.js') }}"></script>
+<script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+<script src="{{ asset('lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ asset('lib/counterup/counterup.min.js') }}"></script>
+<script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('lib/tempusdominus/js/moment.min.js') }}"></script>
+<script src="{{ asset('lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+<script src="{{ asset('lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>
